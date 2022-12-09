@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group 'de.saqer'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.2'
+    implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.12.351'
+    implementation 'com.amazonaws:aws-java-sdk-sqs:1.12.351'
+
+    implementation "com.twitter:twitter-api-java-sdk:2.0.3"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+
+    implementation 'com.google.code.gson:gson:2.10'
+}
+
+test {
+    useJUnitPlatform()
+}
