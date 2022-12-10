@@ -24,6 +24,11 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 
     implementation 'com.google.code.gson:gson:2.10'
+
+    // https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-tests
+    testImplementation group: 'com.amazonaws', name: 'aws-lambda-java-tests', version: '1.1.1'
+
+    implementation 'org.mockito:mockito-core:4.9.0'
 }
 
 test {
