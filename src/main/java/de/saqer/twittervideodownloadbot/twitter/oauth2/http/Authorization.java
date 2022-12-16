@@ -23,7 +23,7 @@ public class Authorization {
             builder.addParameter("response_type", "code");
             builder.addParameter("client_id", clientId);
             builder.addParameter("redirect_uri", redirectUri);
-            builder.addParameter("scope", "tweet.read tweet.write users.read");
+            builder.addParameter("scope", "tweet.read tweet.write users.read offline.access");
             builder.addParameter("state", "state");
             builder.addParameter("code_challenge", "challenge");
             builder.addParameter("code_challenge_method", "plain");
