@@ -1,40 +1,26 @@
 package de.saqer.twittervideodownloadbot.twitter.oauth2.model;
 
 public class OAuth2Credentials {
-    private String id;
-    private long modifiedAt;
-    private String clientId;
-    private String clientSecret;
-    private String accessToken;
-    private String refreshToken;
+    private long usedAtTimestamp;
+    private final String accessToken;
+    private final String refreshToken;
+    private final int expiresIn;
+    private final String scope;
 
-    public OAuth2Credentials(String id, long timestamp, String clientId, String clientSecret, String accessToken, String refreshToken) {
-        this.id = id;
-        this.modifiedAt = timestamp;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
+    public OAuth2Credentials(long usedAtTimestamp, String accessToken, String refreshToken, int expiresIn, String scope) {
+        this.usedAtTimestamp = usedAtTimestamp;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.expiresIn = expiresIn;
+        this.scope = scope;
     }
 
-    public String getId() {
-        return id;
+    public void setUsedAtTimestamp(long usedAtTimestamp) {
+        this.usedAtTimestamp = usedAtTimestamp;
     }
 
-    public long getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(long modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public String getClientSecret() {
-        return clientSecret;
+    public long getUsedAtTimestamp() {
+        return usedAtTimestamp;
     }
 
     public String getAccessToken() {
@@ -44,4 +30,13 @@ public class OAuth2Credentials {
     public String getRefreshToken() {
         return refreshToken;
     }
+
+    public int getExpiresIn() {
+        return expiresIn;
+    }
+
+    public String getScope() {
+        return scope;
+    }
 }
+

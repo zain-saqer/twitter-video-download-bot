@@ -11,16 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AuthorizeRedirectionHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    private final Authorization authorization;
-
-    public AuthorizeRedirectionHandler(Authorization authorization) {
-        this.authorization = authorization;
-    }
 
     @Override
     public APIGatewayV2HTTPResponse handleRequest(APIGatewayV2HTTPEvent event, Context context) {
 
         LambdaLogger logger = context.getLogger();
+
+        Authorization authorization = new Authorization(System.getenv("TWITTER_CLIENT_ID"), System.getenv("TWITTER_OAUTH2_REDIRECTION_URI"));
 
         logger.log("redirect to authorize url");
 

@@ -86,7 +86,7 @@ public class DynamoDBOAuth2CredentialsRepositoryTest {
 
         List<OAuth2Credentials> oAuth2CredentialsList = new ArrayList<>();
 
-        OAuth2Credentials oAuth2Credentials = new OAuth2Credentials("id", 123, "client-id", "secret", "accessToken", "refreshToken");
+        OAuth2Credentials oAuth2Credentials = new OAuth2Credentials(123, "accessToken", "refreshToken", 123, "scope");
 
         oAuth2CredentialsList.add(oAuth2Credentials);
 
@@ -109,7 +109,7 @@ public class DynamoDBOAuth2CredentialsRepositoryTest {
 
         List<OAuth2Credentials> oAuth2CredentialsList = new ArrayList<>();
 
-        OAuth2Credentials oAuth2Credentials = new OAuth2Credentials("id", 123, "client-id", "secret", "accessToken", "refreshToken");
+        OAuth2Credentials oAuth2Credentials = new OAuth2Credentials(123, "accessToken", "refreshToken", 123, "scope");
 
         oAuth2CredentialsList.add(oAuth2Credentials);
 
