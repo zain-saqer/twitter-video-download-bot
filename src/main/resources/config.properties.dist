@@ -1,0 +1,6 @@
+twitter.bearer=
+twitter.clientId=
+twitter.oauth20_redirection_uri=
+aws.accessKeyId=
+aws.secretAccessKey=
+stream.sqsQueueUrl=
