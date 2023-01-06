@@ -36,7 +36,7 @@ public class DynamoDBOAuth2CredentialsRepository implements OAuth2CredentialsRep
 
         item.getString(LIST_PROP_NAME);
 
-        TypeToken<Collection<OAuth2Credentials>> collectionType = new TypeToken<>() {
+        TypeToken<Collection<OAuth2Credentials>> collectionType = new TypeToken<Collection<OAuth2Credentials>>() {
         };
         Collection<OAuth2Credentials> credentialsCollection = gson.fromJson(item.getString(LIST_PROP_NAME), collectionType);
 
