@@ -1,4 +1,4 @@
-package de.saqer.twittervideodownloadbot.twitter.oauth2.awslambdahandler;
+package de.saqer.twittervideodownloadbot.twitter.oauth2.aws.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;

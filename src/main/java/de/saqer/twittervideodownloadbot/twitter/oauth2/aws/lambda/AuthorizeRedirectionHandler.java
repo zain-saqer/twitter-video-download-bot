@@ -1,11 +1,13 @@
-package de.saqer.twittervideodownloadbot.twitter.oauth2.awslambdahandler;
+package de.saqer.twittervideodownloadbot.twitter.oauth2.aws.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import de.saqer.twittervideodownloadbot.twitter.oauth2.http.Authorization;
+import com.github.scribejava.core.pkce.PKCE;
+import com.github.scribejava.core.pkce.PKCEService;
+import com.twitter.clientlib.auth.TwitterOAuth20Service;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,27 +20,31 @@ public class AuthorizeRedirectionHandler implements RequestHandler<APIGatewayV2H
 
     @Override
     public APIGatewayV2HTTPResponse handleRequest(APIGatewayV2HTTPEvent event, Context context) {
-
         LambdaLogger logger = context.getLogger();
-
-        Authorization authorization;
+        PKCEService  pkceService = new PKCEService();
+        PKCE pkce;
         try {
-            authorization = new Authorization(readPropertyFromPropertiesFile("twitter.clientId"), readPropertyFromPropertiesFile("twitter.oauth20_redirection_uri"));
+            pkce = pkceService.generatePKCE(readPropertyFromPropertiesFile("twitter.randomBytes").getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        try (TwitterOAuth20Service twitterOAuth20Service = new TwitterOAuth20Service(
+                readPropertyFromPropertiesFile("twitter.clientId"),
+                readPropertyFromPropertiesFile("twitter.clientSecret"),
+                readPropertyFromPropertiesFile("twitter.oauth20RedirectUri"),
+                readPropertyFromPropertiesFile("twitter.oauth20Scope")
+        )) {
+            logger.log("redirect to authorize url");
+            APIGatewayV2HTTPResponse response = new APIGatewayV2HTTPResponse();
+            response.setStatusCode(307);
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Location", twitterOAuth20Service.getAuthorizationUrl(pkce, "state"));
+            response.setHeaders(headers);
 
-        logger.log("redirect to authorize url");
-
-        APIGatewayV2HTTPResponse response = new APIGatewayV2HTTPResponse();
-
-        response.setStatusCode(307);
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Location", authorization.generateAuthorizeUrl());
-        response.setHeaders(headers);
-
-        return response;
+            return response;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static String readPropertyFromPropertiesFile(String name) throws IOException {

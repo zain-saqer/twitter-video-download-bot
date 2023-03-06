@@ -25,6 +25,8 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.10'
 
+    implementation 'com.github.scribejava:scribejava-apis:8.3.3'
+
     // https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-tests
     testImplementation group: 'com.amazonaws', name: 'aws-lambda-java-tests', version: '1.1.1'
 
@@ -33,4 +35,23 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+build.dependsOn buildZip
+
+task buildFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'de.saqer.twittervideodownloadbot.stream.Main'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
