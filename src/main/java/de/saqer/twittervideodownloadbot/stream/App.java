@@ -10,7 +10,6 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 public class App {
-
     private static final Logger logger = Logger.getLogger(App.class.getName());
     private static Properties properties;
 
@@ -18,7 +17,9 @@ public class App {
         TwitterCredentialsBearer twitterCredentialsOAuth2 = new TwitterCredentialsBearer(readPropertyFromPropertiesFile("twitter.bearer"));
         TwitterApi twitterApi = new TwitterApi(twitterCredentialsOAuth2);
         SearchStream searchStream = new SearchStream(twitterApi);
-        AmazonSQS sqs = AmazonSQSClientBuilder.defaultClient();
+        AmazonSQS sqs = AmazonSQSClientBuilder.standard()
+                .withRegion(readPropertyFromPropertiesFile("aws.region"))
+                .build();
         AwsSqsTweetHandler awsSqsTweetHandler = new AwsSqsTweetHandler(sqs, readPropertyFromPropertiesFile("stream.sqsQueueUrl"), logger);
 
         StreamExecutor streamListenersExecutor = new StreamExecutor(awsSqsTweetHandler, searchStream, logger);

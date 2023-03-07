@@ -49,20 +49,20 @@ resource "aws_iam_role_policy_attachment" "aws_iam_role_oauth20_authorize_policy
   policy_arn = aws_iam_policy.iam_policy_for_oauth20_authorize_lambda.arn
 }
 
-resource "aws_lambda_function" "oauth20_authorize_lambda_function" {
+resource "aws_lambda_function" "oauth20_authorize" {
   runtime          = var.lambda_runtime
   filename         = var.lambda_payload_filename
   source_code_hash = filebase64sha256(var.lambda_payload_filename)
   function_name    = "${local.prefix}-oauth20-authorize"
 
-  handler          = "de.saqer.twittervideodownloadbot.twitter.oauth2.awslambdahandler.AuthorizeRedirectionHandler::handleRequest"
+  handler          = "de.saqer.twittervideodownloadbot.twitter.oauth2.aws.lambda.AuthorizeRedirectionHandler::handleRequest"
   timeout          = 60
   memory_size      = 256
   role             = aws_iam_role.iam_role_for_oauth20_authorize_lambda.arn
 }
 
 resource "aws_cloudwatch_log_group" "oauth20_authorize_log_group" {
-  name              = "/aws/lambda/${aws_lambda_function.oauth20_authorize_lambda_function.function_name}"
+  name              = "/aws/lambda/${aws_lambda_function.oauth20_authorize.function_name}"
   retention_in_days = 7
   lifecycle {
     prevent_destroy = false
@@ -72,7 +72,7 @@ resource "aws_cloudwatch_log_group" "oauth20_authorize_log_group" {
 resource "aws_apigatewayv2_integration" "gw_integration_authorize" {
   api_id = aws_apigatewayv2_api.gw_v2_api.id
 
-  integration_uri    = aws_lambda_function.oauth20_authorize_lambda_function.invoke_arn
+  integration_uri    = aws_lambda_function.oauth20_authorize.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
 }
@@ -87,7 +87,7 @@ resource "aws_apigatewayv2_route" "gw_route_authorize" {
 resource "aws_lambda_permission" "api_gw_authorize" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.oauth20_authorize_lambda_function.function_name
+  function_name = aws_lambda_function.oauth20_authorize.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.gw_v2_api.execution_arn}/*/*"

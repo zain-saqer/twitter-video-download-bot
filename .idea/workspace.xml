@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bad0131-ec76-4357-9ec1-e74211789f99" name="Changes" comment="OAuth2CredentialsRepository">
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/twitter/oauth2/model/OAuth2Credentials.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/de/saqer/twittervideodownloadbot/repository/DynamoDBOAuth2CredentialsRepositoryTest.java" afterDir="false" />
+    <list default="true" id="1bad0131-ec76-4357-9ec1-e74211789f99" name="Changes" comment="tweetsqs lambda">
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/worker/TweetHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/worker/aws/lambda/TweetSQSHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/terraform/twitter_sqs_lambda.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/StreamExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/StreamExecutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.properties.dist" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.properties.dist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform/download-requests-queue.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/download-requests-queue.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform/filtered-stream.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/filtered-stream.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform/oauth20_authorize_lambda.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/oauth20_authorize_lambda.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform/oauth20_redirection_lambda.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/oauth20_redirection_lambda.tf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +33,22 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/resources/config.properties" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="s11lpqi7" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -43,10 +68,47 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.TwitterVideoDownloadBot [buildZip]">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="de.saqer.twittervideodownloadbot.stream.App" />
+      <module name="TwitterVideoDownloadBot.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="de.saqer.twittervideodownloadbot.stream.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TwitterVideoDownloadBot [buildZip]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="buildZip" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="TwitterVideoDownloadBot [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -68,8 +130,18 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration default="true" type="aws.lambda" factoryName="Remote">
+      <option name="credentialProviderId" />
+      <option name="regionId" />
+      <option name="functionName" />
+      <option name="input" />
+      <option name="inputIsFile" value="false" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.TwitterVideoDownloadBot [buildZip]" />
+        <item itemvalue="Application.App" />
         <item itemvalue="Gradle.TwitterVideoDownloadBot [test]" />
       </list>
     </recent_temporary>
@@ -91,7 +163,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670590234163</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="OAuth 2.0 lambda functions">
+      <created>1678125350378</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1678125350378</updated>
+    </task>
+    <task id="LOCAL-00003" summary="OAuth 2.0 lambda functions">
+      <created>1678125361822</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1678125361822</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -100,6 +186,19 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="OAuth2CredentialsRepository" />
-    <option name="LAST_COMMIT_MESSAGE" value="OAuth2CredentialsRepository" />
+    <MESSAGE value="OAuth 2.0 lambda functions" />
+    <MESSAGE value="tweetsqs lambda" />
+    <option name="LAST_COMMIT_MESSAGE" value="tweetsqs lambda" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/StreamExecutor.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

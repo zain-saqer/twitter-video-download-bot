@@ -49,10 +49,12 @@ public class StreamExecutor {
             throw new RuntimeException(e);
         }
 
-        threadPoolExecutor = new ScheduledThreadPoolExecutor(3);
-        threadPoolExecutor.execute(new RestartChecker());
+        threadPoolExecutor = new ScheduledThreadPoolExecutor(2);
         threadPoolExecutor.execute(new QueueEnqueuer());
         threadPoolExecutor.execute(new QueueDequeuer());
+
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(new RestartChecker(), 0, 500, TimeUnit.MILLISECONDS);
 
         logger.info("filtered stream started");
     }

@@ -5,3 +5,5 @@ twitter.oauth20RedirectUri=
 twitter.oauth20Scope=
 twitter.randomBytes=
 stream.sqsQueueUrl=
+aws.accessKeyId=
+aws.secretAccessKey=

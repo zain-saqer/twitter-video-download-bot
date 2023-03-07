@@ -74,5 +74,5 @@
 ##    command = "sftp -b ${var.sftp_batch_path} -i ${var.private_key_path} -o StrictHostKeyChecking=no ubuntu@${aws_instance.twitter_filtered_stream_ec2_instance.public_dns}"
 ##  }
 #}
-#
-#
+
+

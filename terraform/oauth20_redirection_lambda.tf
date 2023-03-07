@@ -51,7 +51,7 @@ resource "aws_iam_role_policy_attachment" "aws_iam_role_oauth20_redirection_poli
   policy_arn = aws_iam_policy.iam_policy_for_oauth20_redirection_lambda.arn
 }
 
-resource "aws_lambda_function" "oauth20_redirection_lambda_function" {
+resource "aws_lambda_function" "oauth20_redirection" {
   runtime          = var.lambda_runtime
   filename         = var.lambda_payload_filename
   source_code_hash = filebase64sha256(var.lambda_payload_filename)
@@ -61,14 +61,14 @@ resource "aws_lambda_function" "oauth20_redirection_lambda_function" {
     variables = local.oauth20_redirection_lambda_environment_vars
   }
 
-  handler          = "de.saqer.twittervideodownloadbot.twitter.oauth2.awslambdahandler.CallbackHandler::handleRequest"
+  handler          = "de.saqer.twittervideodownloadbot.twitter.oauth2.aws.lambda.CallbackHandler::handleRequest"
   timeout          = 60
-  memory_size      = 256
+  memory_size      = 512
   role             = aws_iam_role.iam_role_for_oauth20_redirection_lambda.arn
 }
 
 resource "aws_cloudwatch_log_group" "oauth20_redirection_log_group" {
-  name              = "/aws/lambda/${aws_lambda_function.oauth20_redirection_lambda_function.function_name}"
+  name              = "/aws/lambda/${aws_lambda_function.oauth20_redirection.function_name}"
   retention_in_days = 7
   lifecycle {
     prevent_destroy = false
@@ -78,7 +78,7 @@ resource "aws_cloudwatch_log_group" "oauth20_redirection_log_group" {
 resource "aws_apigatewayv2_integration" "gw_integration_redirection" {
   api_id = aws_apigatewayv2_api.gw_v2_api.id
 
-  integration_uri    = aws_lambda_function.oauth20_redirection_lambda_function.invoke_arn
+  integration_uri    = aws_lambda_function.oauth20_redirection.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
 }
@@ -93,7 +93,7 @@ resource "aws_apigatewayv2_route" "gw_route_redirection" {
 resource "aws_lambda_permission" "api_gw_redirection" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.oauth20_redirection_lambda_function.function_name
+  function_name = aws_lambda_function.oauth20_redirection.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.gw_v2_api.execution_arn}/*/*"

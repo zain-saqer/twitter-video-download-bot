@@ -4,7 +4,7 @@ resource "aws_sqs_queue" "twitter_video_download_requests_queue_deadletter" {
 
 resource "aws_sqs_queue" "twitter_video_download_requests_queue" {
   name                      = "twitter-video-download-requests"
-  visibility_timeout_seconds = 30
+  visibility_timeout_seconds = 61
   delay_seconds             = 0
   max_message_size          = 262144
   message_retention_seconds = 345600
