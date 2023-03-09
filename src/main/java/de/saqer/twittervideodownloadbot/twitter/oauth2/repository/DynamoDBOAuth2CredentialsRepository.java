@@ -35,7 +35,7 @@ public class DynamoDBOAuth2CredentialsRepository implements OAuth2CredentialsRep
         Item item = table.getItem(new KeyAttribute(HASH_PROP_NAME, HASH_PROP_VALUE));
         if (item != null) {
             item.getString(LIST_PROP_NAME);
-            TypeToken<Collection<OAuth2Credentials>> collectionType = new TypeToken<Collection<OAuth2Credentials>>() {
+            TypeToken<Collection<OAuth2Credentials>> collectionType = new TypeToken<>() {
             };
             Collection<OAuth2Credentials> credentialsCollection = gson.fromJson(item.getString(LIST_PROP_NAME), collectionType);
             return new ArrayList<>(credentialsCollection);
@@ -64,6 +64,8 @@ public class DynamoDBOAuth2CredentialsRepository implements OAuth2CredentialsRep
                 credentials = c;
             }
         }
+        credentials.setUsedAtTimestamp(System.currentTimeMillis());
+        add(credentials);
 
         return credentials;
     }

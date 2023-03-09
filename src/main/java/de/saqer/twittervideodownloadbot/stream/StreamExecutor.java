@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Objects;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
@@ -30,6 +29,7 @@ public class StreamExecutor {
 
     public void execute() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.info("shutting down...");
             if (null != threadPoolExecutor) {
                 threadPoolExecutor.shutdown();
             }
@@ -54,7 +54,7 @@ public class StreamExecutor {
         threadPoolExecutor.execute(new QueueDequeuer());
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(new RestartChecker(), 0, 500, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(new RestartChecker(), 0, 100, TimeUnit.MILLISECONDS);
 
         logger.info("filtered stream started");
     }
@@ -74,8 +74,9 @@ public class StreamExecutor {
         @Override
         public void run() {
             if (isRestarting.get()) {
-                isRestarting.set(false);
+                logger.info("restarting");
                 stop();
+                isRestarting.set(false);
                 start();
             }
         }
@@ -91,17 +92,20 @@ public class StreamExecutor {
                         continue;
                     }
                     StreamingTweetResponse streamingTweetResponse = searchStreamHandler
-                            .getStreamingTweetResponseObject(Objects.requireNonNull(tweetStr));
+                            .getStreamingTweetResponseObject(tweetStr);
                     if (searchStreamHandler.hasErrors(streamingTweetResponse)) {
+                        logger.warning("error getting parsing tweet json");
                         isRestarting.set(true);
                         break;
                     }
                     tweetHandler.handle(streamingTweetResponse.getData());
                 } catch (InvalidTweetJsonException e) {
-                    logger.severe(String.format("QueueDequeuer exception: %s", e.getMessage()));
+                    logger.info(String.format("QueueDequeuer exception: %s", e.getMessage()));
                     isRestarting.set(true);
                 } catch (InterruptedException e) {
                     logger.info("QueueDequeuer thread interrupted: %s");
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

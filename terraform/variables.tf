@@ -1,6 +1,6 @@
 variable "region" {
   # set aws region
-  default = "eu-central-1"
+  default = "us-east-1"
 }
 
 variable "shared_credentials_files" {

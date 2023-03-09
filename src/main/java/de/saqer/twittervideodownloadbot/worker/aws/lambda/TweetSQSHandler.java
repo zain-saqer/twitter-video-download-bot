@@ -9,6 +9,7 @@ import com.amazonaws.services.lambda.runtime.events.SQSBatchResponse;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent.SQSMessage;
 import com.google.gson.Gson;
+import com.twitter.clientlib.ApiException;
 import com.twitter.clientlib.TwitterCredentialsOAuth2;
 import com.twitter.clientlib.api.TwitterApi;
 import com.twitter.clientlib.model.Tweet;
@@ -19,15 +20,17 @@ import de.saqer.twittervideodownloadbot.worker.TweetHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-public class TweetSQSHandler implements RequestHandler<SQSEvent, SQSBatchResponse>{
+public class TweetSQSHandler implements RequestHandler<SQSEvent, SQSBatchResponse> {
     private static Properties properties;
 
+    private static final List<Integer> retryErrorCodes = Arrays.asList(429, 500, 503, 504, 505);
+
     @Override
-    public SQSBatchResponse handleRequest(SQSEvent event, Context context)
-    {
+    public SQSBatchResponse handleRequest(SQSEvent event, Context context) {
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.defaultClient();
         DynamoDB dynamoDBInstance = new DynamoDB(client);
         DynamoDBOAuth2CredentialsRepository credentialsRepository = new DynamoDBOAuth2CredentialsRepository(dynamoDBInstance, System.getenv("TWITTER_OAUTH20_CREDENTIALS_DYNAMODB_TABLE"), new Gson());
@@ -54,6 +57,13 @@ public class TweetSQSHandler implements RequestHandler<SQSEvent, SQSBatchRespons
                 System.out.println("handling tweet - message id: " + msg.getMessageId());
                 Tweet tweet = Tweet.fromJson(msg.getBody());
                 tweetHandler.handle(tweet);
+            } catch (ApiException e) {
+                if (!retryErrorCodes.contains(e.getCode())) {
+                    System.err.printf("error code %d - tweet ignored", e.getCode());
+                } else {
+                    System.err.printf("error code %d", e.getCode());
+                    batchItemFailures.add(new SQSBatchResponse.BatchItemFailure(msg.getMessageId()));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 batchItemFailures.add(new SQSBatchResponse.BatchItemFailure(msg.getMessageId()));

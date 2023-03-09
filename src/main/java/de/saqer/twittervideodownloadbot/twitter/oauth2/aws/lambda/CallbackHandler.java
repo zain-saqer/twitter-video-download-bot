@@ -73,7 +73,7 @@ public class CallbackHandler implements RequestHandler<APIGatewayV2HTTPEvent, AP
 
             User user = getUser(accessToken);
 
-            OAuth2Credentials oAuth2Credentials = new OAuth2Credentials(0, accessToken.getAccessToken(), accessToken.getRefreshToken(), accessToken.getExpiresIn(), accessToken.getScope(), user.getId(), user.getUsername());
+            OAuth2Credentials oAuth2Credentials = new OAuth2Credentials(System.currentTimeMillis(), accessToken.getAccessToken(), accessToken.getRefreshToken(), accessToken.getExpiresIn(), accessToken.getScope(), user.getId(), user.getUsername());
             credentialsRepository.add(oAuth2Credentials);
 
             logger.log(String.format("access token retrieved and saved - username: %s", user.getUsername()));

@@ -1,5 +1,7 @@
 package de.saqer.twittervideodownloadbot.stream;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.twitter.clientlib.TwitterCredentialsBearer;
@@ -17,14 +19,20 @@ public class App {
         TwitterCredentialsBearer twitterCredentialsOAuth2 = new TwitterCredentialsBearer(readPropertyFromPropertiesFile("twitter.bearer"));
         TwitterApi twitterApi = new TwitterApi(twitterCredentialsOAuth2);
         SearchStream searchStream = new SearchStream(twitterApi);
-        AmazonSQS sqs = AmazonSQSClientBuilder.standard()
-                .withRegion(readPropertyFromPropertiesFile("aws.region"))
-                .build();
-        AwsSqsTweetHandler awsSqsTweetHandler = new AwsSqsTweetHandler(sqs, readPropertyFromPropertiesFile("stream.sqsQueueUrl"), logger);
+        try {
+            BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(readPropertyFromPropertiesFile("aws.accessKeyId"), readPropertyFromPropertiesFile("aws.secretAccessKey"));
 
-        StreamExecutor streamListenersExecutor = new StreamExecutor(awsSqsTweetHandler, searchStream, logger);
-
-        streamListenersExecutor.execute();
+            AmazonSQS sqs = AmazonSQSClientBuilder
+                    .standard()
+                    .withRegion(readPropertyFromPropertiesFile("aws.region"))
+                    .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
+                    .build();
+            AwsSqsTweetHandler awsSqsTweetHandler = new AwsSqsTweetHandler(sqs, readPropertyFromPropertiesFile("stream.sqsQueueUrl"), logger);
+            StreamExecutor streamListenersExecutor = new StreamExecutor(awsSqsTweetHandler, searchStream, logger);
+            streamListenersExecutor.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static String readPropertyFromPropertiesFile(String name) throws IOException {

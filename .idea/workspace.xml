@@ -5,19 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bad0131-ec76-4357-9ec1-e74211789f99" name="Changes" comment="tweetsqs lambda">
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/worker/TweetHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/worker/aws/lambda/TweetSQSHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/terraform/twitter_sqs_lambda.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/TwitterVideoDownloadBot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/StreamExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/StreamExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config.properties.dist" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.properties.dist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terraform/download-requests-queue.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/download-requests-queue.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/twitter/oauth2/aws/lambda/CallbackHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/twitter/oauth2/aws/lambda/CallbackHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/twitter/oauth2/repository/DynamoDBOAuth2CredentialsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/twitter/oauth2/repository/DynamoDBOAuth2CredentialsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/worker/aws/lambda/TweetSQSHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/worker/aws/lambda/TweetSQSHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/terraform/filtered-stream.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/filtered-stream.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terraform/oauth20_authorize_lambda.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/oauth20_authorize_lambda.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terraform/oauth20_redirection_lambda.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/oauth20_redirection_lambda.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terraform/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/terraform/variables.tf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,21 +61,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;JSON&quot;
+    ]
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager" selected="Gradle.TwitterVideoDownloadBot [buildZip]">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="de.saqer.twittervideodownloadbot.stream.App" />
@@ -87,6 +101,27 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="TwitterVideoDownloadBot [buildFatJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="buildFatJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
     </configuration>
     <configuration name="TwitterVideoDownloadBot [buildZip]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -130,18 +165,11 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration default="true" type="aws.lambda" factoryName="Remote">
-      <option name="credentialProviderId" />
-      <option name="regionId" />
-      <option name="functionName" />
-      <option name="input" />
-      <option name="inputIsFile" value="false" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.TwitterVideoDownloadBot [buildZip]" />
         <item itemvalue="Application.App" />
+        <item itemvalue="Gradle.TwitterVideoDownloadBot [buildFatJar]" />
         <item itemvalue="Gradle.TwitterVideoDownloadBot [test]" />
       </list>
     </recent_temporary>
@@ -177,7 +205,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678125361822</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="tweetsqs lambda">
+      <created>1678225104314</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1678225104314</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -194,10 +229,24 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/StreamExecutor.java</url>
-          <line>43</line>
-          <option name="timeStamp" value="4" />
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.12.351/37f26190ce1aa66a5018530d3d9e2ec2859cdb81/aws-java-sdk-core-1.12.351-sources.jar!/com/amazonaws/ClientConfigurationFactory.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/de/saqer/twittervideodownloadbot/stream/App.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.12.422/d0ee333835aa42666658168ee497f2dbc88184ab/aws-java-sdk-core-1.12.422-sources.jar!/com/amazonaws/util/ClassLoaderHelper.java</url>
+          <line>224</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ExceptionInInitializerError" package="java.lang" />
+          <option name="timeStamp" value="15" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
